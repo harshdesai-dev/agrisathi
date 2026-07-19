@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Government Schemes - AgriSathi{% endblock %}
+{% block content %}
+<h1>📋 Government Schemes</h1>
+
+<form method="get" class="filter-bar">
+    <input type="text" name="q" placeholder="Search schemes..." value="{{ search }}">
+    <select name="crop_id">
+        <option value="">All Crops</option>
+        {% for c in crops %}
+        <option value="{{ c.id }}" {% if c.id|string == selected_crop_id %}selected{% endif %}>
+            {{ c.crop_name }}
+        </option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn-primary">Search</button>
+    {% if search or selected_crop_id %}
+    <a href="{{ url_for('schemes.index') }}" class="btn-link">Clear</a>
+    {% endif %}
+</form>
+
+<div class="scheme-list">
+    {% for s in schemes %}
+    <div class="scheme-card">
+        <h3><a href="{{ url_for('schemes.detail', scheme_id=s.id) }}">{{ s.scheme_name }}</a></h3>
+        {% if s.crop_name %}<span class="badge">{{ s.crop_name }}</span>{% endif %}
+        <p>{{ s.benefit }}</p>
+    </div>
+    {% else %}
+    <p>No schemes found. Try a different search or crop filter.</p>
+    {% endfor %}
+</div>
+{% endblock %}

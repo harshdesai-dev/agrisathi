@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ crop.crop_name }} - AgriSathi{% endblock %}
+{% block content %}
+<a href="{{ url_for('prices.index') }}" class="btn-link">← Back to Prices</a>
+<h1>{{ crop.crop_name }}</h1>
+<span class="badge">{{ crop.crop_status }}</span>
+
+<div class="card">
+    <canvas id="priceChart" height="90"></canvas>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+    new Chart(document.getElementById("priceChart"), {
+        type: "bar",
+        data: {
+            labels: ["Market Price", "MSP (Govt. Minimum)"],
+            datasets: [{
+                label: "₹ per quintal",
+                data: [{{ crop.market_price }}, {{ crop.msp_price }}],
+                backgroundColor: ["#2E7D32", "#F9A825"],
+            }],
+        },
+        options: { responsive: true, plugins: { legend: { display: false } } },
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}{{ scheme.scheme_name }} - AgriSathi{% endblock %}
+{% block content %}
+{% if scheme %}
+<a href="{{ url_for('schemes.index') }}" class="btn-link">← Back to Schemes</a>
+<h1>{{ scheme.scheme_name }}</h1>
+{% if scheme.crop_name %}<span class="badge">{{ scheme.crop_name }}</span>{% endif %}
+
+<div class="detail-card">
+    <h2>Benefit</h2>
+    <p>{{ scheme.benefit }}</p>
+
+    {% if scheme.action_link %}
+    <a href="{{ scheme.action_link }}" target="_blank" class="btn-primary">Apply / Learn More ↗</a>
+    {% endif %}
+</div>
+{% else %}
+<p>Scheme not found.</p>
+{% endif %}
+{% endblock %}

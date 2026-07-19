@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Crop Prices - AgriSathi{% endblock %}
+{% block content %}
+<h1>💰 Crop Prices</h1>
+
+<form method="get" class="filter-bar">
+    <input type="text" name="crop" placeholder="Search crop..." value="{{ search }}">
+    <button type="submit" class="btn-primary">Search</button>
+</form>
+
+<div class="card">
+    <table class="price-table">
+        <tr>
+            <th>Crop</th>
+            <th>Market Price (₹/quintal)</th>
+            <th>MSP (₹/quintal)</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+        {% for c in crops %}
+        <tr>
+            <td>{{ c.crop_name }}</td>
+            <td>₹{{ c.market_price }}</td>
+            <td>₹{{ c.msp_price }}</td>
+            <td>
+                {% if c.market_price >= c.msp_price %}
+                <span class="badge">{{ c.crop_status }}</span>
+                {% else %}
+                <span class="badge badge-warning">{{ c.crop_status }}</span>
+                {% endif %}
+            </td>
+            <td><a href="{{ url_for('prices.detail', crop_id=c.id) }}" class="btn-link">View →</a></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5">No crop price data found.</td></tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

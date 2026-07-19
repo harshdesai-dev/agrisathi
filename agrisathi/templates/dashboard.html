@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - AgriSathi{% endblock %}
+{% block content %}
+<h1>Welcome, {{ user_name }} 👋</h1>
+
+<div class="dashboard-grid">
+    <div class="card">
+        <h2>📋 Latest Government Schemes</h2>
+        <ul class="list">
+            {% for s in latest_schemes %}
+            <li><a href="{{ url_for('schemes.detail', scheme_id=s.id) }}">{{ s.scheme_name }}</a>
+                {% if s.crop_name %}<span class="badge">{{ s.crop_name }}</span>{% endif %}</li>
+            {% else %}
+            <li>No schemes available yet.</li>
+            {% endfor %}
+        </ul>
+        <a href="{{ url_for('schemes.index') }}" class="btn-link">View all schemes →</a>
+    </div>
+
+    <div class="card">
+        <h2>💰 Latest Crop Prices</h2>
+        <ul class="list">
+            {% for p in latest_prices %}
+            <li>{{ p.crop_name }} — ₹{{ p.market_price }}/quintal
+                <span class="muted">(MSP ₹{{ p.msp_price }})</span></li>
+            {% else %}
+            <li>No price data available yet.</li>
+            {% endfor %}
+        </ul>
+        <a href="{{ url_for('prices.index') }}" class="btn-link">View all prices →</a>
+    </div>
+</div>
+{% endblock %}
